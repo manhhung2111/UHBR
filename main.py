@@ -159,7 +159,7 @@ def main():
 def get_best_epoch(metrics, best_metrics):
     if (metrics[0].metric > best_metrics[0].metric and metrics[1].metric > best_metrics[1].metric):
         for index in range(len(metrics)):
-            best_metrics[index] = metrics[index].metric
+            best_metrics[index].metric = metrics[index].metric
         isChange = True
         return isChange, best_metrics
     isChange = False
