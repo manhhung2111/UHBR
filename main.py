@@ -140,15 +140,19 @@ def main():
         if(epoch == 0) :
             for metric in result:
                 best_metrics.append(metric.metric)
+            best_epoch = epoch
+            print(f"Best epoch {best_epoch+1} - ")
+            for index in range(len(best_metrics)):
+                print(f"{metrics[index].get_title()}: {best_metrics[index]}, ")
+            print()
         else :
             isChange, best_metrics = get_best_epoch(metrics=result, best_metrics=best_metrics)
             if isChange:
                 best_epoch = epoch
-                print(f"Best epoch {best_epoch} - ")
-                for metric in best_metrics:
-                    metric.stop()
-                    print("{}:{}".format(metric.get_title(), metric.metric), end="\t")
-                print("")
+                print(f"Best epoch {best_epoch+1} - ")
+                for index in range(len(best_metrics)):
+                    print(f"{metrics[index].get_title()}: {best_metrics[index]}, ")
+                print()
         
         scheduler.step()
 
