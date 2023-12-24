@@ -146,7 +146,7 @@ def main():
         else :
             isChange, after_best = get_best_epoch(metrics=result, best_metrics=best_metrics)
             best_metrics = after_best
-            if isChange:
+            if isChange == True:
                 best_epoch = epoch
                 for metric in best_metrics:
                     print(f"Best epoch {best_epoch+1} - {metric.get_title()}: {metric.metric}, ")
