@@ -162,7 +162,7 @@ def get_best_epoch(metrics, best_metrics):
         isChange = True
         return isChange, best_metrics
     isChange = False
-    return False, metrics
+    return False, best_metrics
 
 
 if __name__ == "__main__":
