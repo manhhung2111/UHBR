@@ -119,8 +119,7 @@ def main():
         NDCG(80),
     ]
 
-    best_metrics = []
-    best_epoch = 0
+    best_metrics = init_best_metrics(metrics)
 
     loss_func = UIBLoss(alpha=args.alpha)
     graph = [ui_graph, bi_graph, ub_graph]
@@ -136,42 +135,27 @@ def main():
     for epoch in range(args.epochs):
         train(model, epoch + 1, train_loader, op, device, loss_func)
         result = test(model, test_loader, device, metrics)
-        if(epoch == 0) :
-            for metric in result:
-                best_metrics.append(metric)
-            best_epoch = epoch
-            for metric in best_metrics:
-                print(f"Best epoch {best_epoch+1} - {metric.get_title()}: {metric.metric}, ")
-            print()
-        else :
-            print("========================")
-            print(f"{result[0].metric} vs {best_metrics[0].metric}")
-            print(f"{result[1].metric} vs {best_metrics[1].metric}")
-            print("====================")
-            isChange, after_best = get_best_epoch(result, best_metrics)
-            print(f"Is change: {isChange}")
-            best_metrics = after_best
-            if isChange == True:
-                best_epoch = epoch
-                for metric in best_metrics:
-                    print(f"Best epoch {best_epoch+1} - {metric.get_title()}: {metric.metric}, ")
-                print()
+            
+        get_best_epoch(result, best_metrics=best_metrics, epoch=epoch)
         
         scheduler.step()
 
+def init_best_metrics(test_metrics):
+    best_metrics = {}
 
-def get_best_epoch(metrics, best_metrics):
-    # print("========================")
-    # print(f"{metrics[0].metric} vs {best_metrics[0].metric}")
-    # print(f"{metrics[1].metric} vs {best_metrics[1].metric}")
-    # print("====================")
-    if (metrics[0].metric > best_metrics[0].metric and metrics[1].metric > best_metrics[1].metric):
-        for index in range(len(metrics)):
-            best_metrics[index].metric = metrics[index].metric
-        isChange = True
-        return isChange, best_metrics
-    isChange = False
-    return False, best_metrics
+    for topk in test_metrics:
+        best_metrics[topk.get_title()] = 0.0
+
+    return best_metrics
+
+def get_best_epoch(metrics, best_metrics, epoch):
+    n = len(metrics)
+    if metrics[0].metric > best_metrics[metrics[0].get_title()] and metrics[1].metric > best_metrics[metrics[1].get_title()]:
+        topk_ = 20  
+        print(f"Top% {topk_} - {metrics[0].get_title()}, {metrics[1].get_title()} as the final evaluation standard")
+        for metric in metrics:
+            best_metrics[metric.get_title()] = metric.metric
+            print(f"Best in epoch {epoch+1}, {metric.get_title()}: {metric.metric}")
 
 
 if __name__ == "__main__":
