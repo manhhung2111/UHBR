@@ -157,6 +157,10 @@ def main():
 
 
 def get_best_epoch(metrics, best_metrics):
+    print("========================")
+    print(f"{metrics[0].metric} vs {best_metrics[0].metric}")
+    print(f"{metrics[1].metric} vs {best_metrics[1].metric}")
+    print("====================")
     if (metrics[0].metric > best_metrics[0].metric and metrics[1].metric > best_metrics[1].metric):
         for index in range(len(metrics)):
             best_metrics[index].metric = metrics[index].metric
