@@ -144,7 +144,11 @@ def main():
                 print(f"Best epoch {best_epoch+1} - {metric.get_title()}: {metric.metric}, ")
             print()
         else :
-            isChange, after_best = get_best_epoch(metrics=result, best_metrics=best_metrics)
+            print("========================")
+            print(f"{result[0].metric} vs {best_metrics[0].metric}")
+            print(f"{result[1].metric} vs {best_metrics[1].metric}")
+            print("====================")
+            isChange, after_best = get_best_epoch(result, best_metrics)
             print(f"Is change: {isChange}")
             best_metrics = after_best
             if isChange == True:
@@ -157,10 +161,10 @@ def main():
 
 
 def get_best_epoch(metrics, best_metrics):
-    print("========================")
-    print(f"{metrics[0].metric} vs {best_metrics[0].metric}")
-    print(f"{metrics[1].metric} vs {best_metrics[1].metric}")
-    print("====================")
+    # print("========================")
+    # print(f"{metrics[0].metric} vs {best_metrics[0].metric}")
+    # print(f"{metrics[1].metric} vs {best_metrics[1].metric}")
+    # print("====================")
     if (metrics[0].metric > best_metrics[0].metric and metrics[1].metric > best_metrics[1].metric):
         for index in range(len(metrics)):
             best_metrics[index].metric = metrics[index].metric
