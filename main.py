@@ -145,6 +145,7 @@ def main():
             print()
         else :
             isChange, after_best = get_best_epoch(metrics=result, best_metrics=best_metrics)
+            print(f"Is change: {isChange}")
             best_metrics = after_best
             if isChange == True:
                 best_epoch = epoch
