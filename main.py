@@ -140,17 +140,16 @@ def main():
             for metric in result:
                 best_metrics.append(metric)
             best_epoch = epoch
-            print(f"Best epoch {best_epoch+1} - ")
             for metric in best_metrics:
-                print(f"{metric.get_title()}: {metric.metric}, ")
+                print(f"Best epoch {best_epoch+1} - {metric.get_title()}: {metric.metric}, ")
             print()
         else :
-            isChange, best_metrics = get_best_epoch(metrics=result, best_metrics=best_metrics)
+            isChange, after_best = get_best_epoch(metrics=result, best_metrics=best_metrics)
+            best_metrics = after_best
             if isChange:
                 best_epoch = epoch
-                print(f"Best epoch {best_epoch+1} - ")
                 for metric in best_metrics:
-                    print(f"{metric.get_title()}: {metric.metric}, ")
+                    print(f"Best epoch {best_epoch+1} - {metric.get_title()}: {metric.metric}, ")
                 print()
         
         scheduler.step()
