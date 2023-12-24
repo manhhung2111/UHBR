@@ -137,6 +137,7 @@ def main():
 
         train(model, epoch + 1, train_loader, op, device, loss_func)
         result = test(model, test_loader, device, metrics)
+        print(result)
         if(epoch == 0) :
             best_metrics = result
         else :
