@@ -119,7 +119,7 @@ def main():
         NDCG(80),
     ]
 
-    best_metrics = {}
+    best_metrics = []
     best_epoch = 0
 
     loss_func = UIBLoss(alpha=args.alpha)
@@ -137,13 +137,13 @@ def main():
 
         train(model, epoch + 1, train_loader, op, device, loss_func)
         result = test(model, test_loader, device, metrics)
-        for metric in result:
-            print(f"{metric.get_title()} -{metric.metric}, ")
         if(epoch == 0) :
-            best_metrics = result
+            for metric in result:
+                best_metrics.append(metric.metric)
         else :
             isChange, best_metrics = get_best_epoch(metrics=result, best_metrics=best_metrics)
             if isChange:
+                best_epoch = epoch
                 print(f"Best epoch {best_epoch} - ")
                 for metric in best_metrics:
                     metric.stop()
@@ -154,8 +154,9 @@ def main():
 
 
 def get_best_epoch(metrics, best_metrics):
-    if (metrics[0].metric > best_metrics[0].metric and metrics[1].metric > best_metrics[1].metric):
-        best_metrics = metrics
+    if (metrics[0].metric > best_metrics[0] and metrics[1].metric > best_metrics[1]):
+        for index in range(len(metrics)):
+            best_metrics[index] = metrics[index].metric
         isChange = True
         return isChange, best_metrics
     isChange = False
