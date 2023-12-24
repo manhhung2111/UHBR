@@ -136,11 +136,11 @@ def main():
     for epoch in range(args.epochs):
 
         train(model, epoch + 1, train_loader, op, device, loss_func)
-        test(model, test_loader, device, metrics)
+        result = test(model, test_loader, device, metrics)
         if(epoch == 0) :
-            best_metrics = metrics
+            best_metrics = result
         else :
-            isChange, best_metrics = get_best_epoch()
+            isChange, best_metrics = get_best_epoch(metrics=result, best_metrics=best_metrics)
             if isChange:
                 print(f"Best epoch {best_epoch} - ")
                 for metric in best_metrics:
