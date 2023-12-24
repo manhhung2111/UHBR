@@ -137,7 +137,8 @@ def main():
 
         train(model, epoch + 1, train_loader, op, device, loss_func)
         result = test(model, test_loader, device, metrics)
-        print(result)
+        for metric in result:
+            print(f"{metric.get_title()} -{metric.metric}, ")
         if(epoch == 0) :
             best_metrics = result
         else :
