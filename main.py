@@ -134,31 +134,30 @@ def main():
         op, milestones=[35, 55, 75], gamma=0.5
     )
     for epoch in range(args.epochs):
-
         train(model, epoch + 1, train_loader, op, device, loss_func)
         result = test(model, test_loader, device, metrics)
         if(epoch == 0) :
             for metric in result:
-                best_metrics.append(metric.metric)
+                best_metrics.append(metric)
             best_epoch = epoch
             print(f"Best epoch {best_epoch+1} - ")
-            for index in range(len(best_metrics)):
-                print(f"{metrics[index].get_title()}: {best_metrics[index]}, ")
+            for metric in best_metrics:
+                print(f"{metric.get_title()}: {metric.metric}, ")
             print()
         else :
             isChange, best_metrics = get_best_epoch(metrics=result, best_metrics=best_metrics)
             if isChange:
                 best_epoch = epoch
                 print(f"Best epoch {best_epoch+1} - ")
-                for index in range(len(best_metrics)):
-                    print(f"{metrics[index].get_title()}: {best_metrics[index]}, ")
+                for metric in best_metrics:
+                    print(f"{metric.get_title()}: {metric.metric}, ")
                 print()
         
         scheduler.step()
 
 
 def get_best_epoch(metrics, best_metrics):
-    if (metrics[0].metric > best_metrics[0] and metrics[1].metric > best_metrics[1]):
+    if (metrics[0].metric > best_metrics[0].metric and metrics[1].metric > best_metrics[1].metric):
         for index in range(len(metrics)):
             best_metrics[index] = metrics[index].metric
         isChange = True
